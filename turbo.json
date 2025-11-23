@@ -4,6 +4,7 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
+			"env": ["NODE_ENV", "DATABASE_URL", "REDIS_URL", "NEXT_PUBLIC_SERVER_URL"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"outputs": ["dist/**"]
 		},
@@ -15,7 +16,8 @@
 		},
 		"dev": {
 			"cache": false,
-			"persistent": true
+			"persistent": true,
+			"env": ["NODE_ENV", "DATABASE_URL", "REDIS_URL", "NEXT_PUBLIC_SERVER_URL"]
 		},
 		"db:push": {
 			"cache": false,

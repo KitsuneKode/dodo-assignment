@@ -1,4 +1,6 @@
 # Dependencies
+wrangler.toml
+.wrangler
 node_modules
 .pnp
 .pnp.js
@@ -48,3 +50,4 @@ coverage
 .cache
 tmp
 temp
+.vercel

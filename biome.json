@@ -1,15 +1,12 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
+	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
 			"**",
 			"!**/.next",
+			"!**/generated",
 			"!**/dist",
 			"!**/.turbo",
 			"!**/dev-dist",
@@ -29,47 +26,73 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "tab"
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"lineEnding": "lf",
+		"lineWidth": 100,
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"expand": "auto",
+		"useEditorconfig": true
 	},
-	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"correctness": {
-				"useExhaustiveDependencies": "info"
+			"correctness": { "useExhaustiveDependencies": "info" },
+			"complexity": {
+				"noStaticOnlyClass": "off",
+				"noThisInStatic": "off"
 			},
 			"nursery": {
 				"useSortedClasses": {
 					"level": "warn",
 					"fix": "safe",
-					"options": {
-						"functions": ["clsx", "cva", "cn"]
-					}
+					"options": { "functions": ["clsx", "cva", "cn"] }
 				}
 			},
 			"style": {
+				"noInferrableTypes": "error",
 				"noParameterAssign": "error",
+				"noUnusedTemplateLiteral": "error",
+				"noUselessElse": "error",
 				"useAsConstAssertion": "error",
 				"useDefaultParameterLast": "error",
 				"useEnumInitializers": "error",
-				"useSelfClosingElements": "error",
-				"useSingleVarDeclarator": "error",
-				"noUnusedTemplateLiteral": "error",
 				"useNumberNamespace": "error",
-				"noInferrableTypes": "error",
-				"noUselessElse": "error"
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error"
 			}
 		}
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"jsxQuoteStyle": "double",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "all",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "single",
+			"attributePosition": "auto",
+			"bracketSpacing": true
 		}
 	},
 	"css": {
-		"parser": {
-			"tailwindDirectives": true
+		"parser": { "tailwindDirectives": true },
+		"formatter": null,
+		"linter": null,
+		"assist": null
+	},
+	"html": {
+		"formatter": {
+			"indentScriptAndStyle": false,
+			"selfCloseVoidElements": "always"
 		}
+	},
+	"assist": {
+		"enabled": null,
+		"actions": { "source": { "organizeImports": "on" } }
 	}
 }
