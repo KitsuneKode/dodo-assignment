@@ -1,26 +1,22 @@
-import { useForm } from "@tanstack/react-form";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import z from "zod";
-import { authClient } from "@/lib/auth-client";
-import Loader from "./loader";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { useForm } from '@tanstack/react-form'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import { authClient } from '@/lib/auth-client'
+import Loader from './loader'
+import { Button } from './ui/button'
+import { Input } from './ui/input'
+import { Label } from './ui/label'
 
-export default function SignUpForm({
-	onSwitchToSignIn,
-}: {
-	onSwitchToSignIn: () => void;
-}) {
-	const router = useRouter();
-	const { isPending } = authClient.useSession();
+export default function SignUpForm({ onSwitchToSignIn }: { onSwitchToSignIn: () => void }) {
+	const router = useRouter()
+	const { isPending } = authClient.useSession()
 
 	const form = useForm({
 		defaultValues: {
-			email: "",
-			password: "",
-			name: "",
+			email: '',
+			password: '',
+			name: '',
 		},
 		onSubmit: async ({ value }) => {
 			await authClient.signUp.email(
@@ -31,27 +27,27 @@ export default function SignUpForm({
 				},
 				{
 					onSuccess: () => {
-						router.push("/dashboard");
-						toast.success("Sign up successful");
+						router.push('/api-queue-demo')
+						toast.success('Sign up successful')
 					},
 					onError: (error) => {
-						console.error(error);
-						toast.error(error.error.message || error.error.statusText);
+						console.error(error)
+						toast.error(error.error.message || error.error.statusText)
 					},
 				},
-			);
+			)
 		},
 		validators: {
 			onSubmit: z.object({
-				name: z.string().min(2, "Name must be at least 2 characters"),
-				email: z.email("Invalid email address"),
-				password: z.string().min(8, "Password must be at least 8 characters"),
+				name: z.string().min(2, 'Name must be at least 2 characters'),
+				email: z.email('Invalid email address'),
+				password: z.string().min(8, 'Password must be at least 8 characters'),
 			}),
 		},
-	});
+	})
 
 	if (isPending) {
-		return <Loader />;
+		return <Loader />
 	}
 
 	return (
@@ -60,9 +56,9 @@ export default function SignUpForm({
 
 			<form
 				onSubmit={(e) => {
-					e.preventDefault();
-					e.stopPropagation();
-					form.handleSubmit();
+					e.preventDefault()
+					e.stopPropagation()
+					form.handleSubmit()
 				}}
 				className="space-y-4"
 			>
@@ -141,7 +137,7 @@ export default function SignUpForm({
 							className="w-full"
 							disabled={!state.canSubmit || state.isSubmitting}
 						>
-							{state.isSubmitting ? "Submitting..." : "Sign Up"}
+							{state.isSubmitting ? 'Submitting...' : 'Sign Up'}
 						</Button>
 					)}
 				</form.Subscribe>
@@ -157,5 +153,5 @@ export default function SignUpForm({
 				</Button>
 			</div>
 		</div>
-	);
+	)
 }

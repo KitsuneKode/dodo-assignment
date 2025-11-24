@@ -27,14 +27,7 @@ app.use(
 app.use(async (c, next) => {
 	const rateLimiter = RedisRateLimiter.getInstance(c)
 	c.set('ratelimit', rateLimiter)
-	const ip = c.req.raw.headers.get('CF-Connecting-IP')
-
-	const { success } = await rateLimiter.limit(ip || 'anonymous')
-	if (success) {
-		await next()
-	} else {
-		return c.json({ message: 'Too Many Requests' }, 429)
-	}
+	await next()
 })
 
 app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw))
@@ -49,8 +42,20 @@ app.use(
 	}),
 )
 
+app.use('*', async (c, next) => {
+	const rateLimiter = c.get('ratelimit')
+	const ip = c.req.raw.headers.get('CF-Connecting-IP')
+
+	const { success } = await rateLimiter.limit(ip || 'anonymous')
+	if (success) {
+		await next()
+	} else {
+		return c.json({ message: 'Too Many Requests' }, 429)
+	}
+})
+
 app.get('/', (c) => {
-	return c.text('OK')
+	return c.json({ status: 'OK' })
 })
 
 export default app

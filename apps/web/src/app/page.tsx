@@ -1,81 +1,53 @@
 'use client'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button } from '@/components/ui/button'
-import { trpc } from '@/utils/trpc'
 
-const TITLE_TEXT = `
- ██████╗ ███████╗████████╗████████╗███████╗██████╗
- ██╔══██╗██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗
- ██████╔╝█████╗     ██║      ██║   █████╗  ██████╔╝
- ██╔══██╗██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗
- ██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║
- ╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝
-
- ████████╗    ███████╗████████╗ █████╗  ██████╗██╗  ██╗
- ╚══██╔══╝    ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝
-    ██║       ███████╗   ██║   ███████║██║     █████╔╝
-    ██║       ╚════██║   ██║   ██╔══██║██║     ██╔═██╗
-    ██║       ███████║   ██║   ██║  ██║╚██████╗██║  ██╗
-    ╚═╝       ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
- `
+import { useState } from 'react'
+import { CreditScoreWidget } from '@/components/dashboard/credit-score-widget'
+import { ExchangeWidget } from '@/components/dashboard/exchange-widget'
+import { DashboardHeader } from '@/components/dashboard/header'
+import { MyCardsWidget } from '@/components/dashboard/my-cards-widget'
+import { RecentTransactionsWidget } from '@/components/dashboard/recent-transactions-widget'
+import { Sidebar } from '@/components/dashboard/sidebar'
+import { SpendingSummaryWidget } from '@/components/dashboard/spending-summary-widget'
+import { SubscriptionsWidget } from '@/components/dashboard/subscriptions-widget'
+import { TotalExpensesWidget } from '@/components/dashboard/total-expenses-widget'
 
 export default function Home() {
-	const healthCheck = useQuery(trpc.healthCheck.queryOptions())
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-	const {
-		mutate: messageMuation,
-		data,
-		isPending,
-		isError,
-		error,
-	} = useMutation(trpc.message.mutationOptions())
+	const toggleMobileMenu = () => {
+		setIsMobileMenuOpen((prev) => !prev)
+	}
+
+	const closeMobileMenu = () => {
+		setIsMobileMenuOpen(false)
+	}
 
 	return (
-		<div className="container mx-auto max-w-3xl px-4 py-2">
-			<pre className="overflow-x-auto font-mono text-sm">{TITLE_TEXT}</pre>
-			<div className="grid gap-6">
-				<section className="rounded-lg border p-4">
-					<h2 className="mb-2 font-medium">API Status</h2>
-					<div className="flex items-center gap-2">
-						<div
-							className={`h-2 w-2 rounded-full ${healthCheck.data ? 'bg-green-500' : 'bg-red-500'}`}
-						/>
-						<span className="text-muted-foreground text-sm">
-							{healthCheck.isLoading
-								? 'Checking...'
-								: healthCheck.data
-									? 'Connected'
-									: 'Disconnected'}
-						</span>
-						<Button
-							variant="secondary"
-							onClick={() => {
-								if (isPending) return
-								messageMuation({ measage: 'Hello from the client!' })
-							}}
-						>
-							Click Me
-						</Button>
-						<div
-							className={`h-2 w-2 rounded-full ${
-								isPending
-									? 'animate-pulse bg-gray-400'
-									: isError
-										? 'bg-red-500'
-										: data
-											? 'bg-green-500'
-											: 'bg-gray-400'
-							}`}
-						/>
+		<div className="flex min-h-screen bg-background">
+			<Sidebar isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
 
-						{data && (
-							<span className="text-muted-foreground text-sm">
-								Response from server: {JSON.stringify(data)}
-							</span>
-						)}
-						{isError && <span>{error.message}</span>}
+			<div className="flex min-w-0 flex-1 flex-col">
+				<DashboardHeader onMenuClick={toggleMobileMenu} />
+
+				<main className="flex-1 overflow-y-auto bg-[var(--bg-page)] p-5">
+					<div className="grid gap-5 lg:grid-cols-3">
+						<div className="flex flex-col gap-5">
+							<MyCardsWidget />
+							<RecentTransactionsWidget />
+						</div>
+
+						<div className="flex flex-col gap-5">
+							<SpendingSummaryWidget />
+							<SubscriptionsWidget />
+						</div>
+
+						<div className="flex flex-col gap-5">
+							<TotalExpensesWidget />
+							<ExchangeWidget />
+							<CreditScoreWidget />
+						</div>
 					</div>
-				</section>
+				</main>
 			</div>
 		</div>
 	)
