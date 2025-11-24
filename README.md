@@ -9,7 +9,7 @@ A production-ready finance dashboard built with Next.js 16, TailwindCSS v4, and 
 
 ## Website Preview
 
-[![Dashboard Screenshot](https://raw.githubusercontent.com/kitsunekode/dodo-assignment/main/apps/web/public/image.png)](http://localhost:3001)
+[![Dashboard Screenshot](apps/web/public/image.png)](http://localhost:3001)
 
 - **Frontend Dashboard**: [http://localhost:3001](http://localhost:3001)
 - **Backend API**: [https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev](https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev)
