@@ -7,11 +7,19 @@ A production-ready finance dashboard built with Next.js 16, TailwindCSS v4, and 
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)
 
+## Website Preview
+
+[![Dashboard Screenshot](https://raw.githubusercontent.com/kitsunekode/dodo-assignment/main/apps/web/public/preview-dashboard.png)](http://localhost:3001)
+
+- **Frontend Dashboard**: [http://localhost:3001](http://localhost:3001)
+- **Backend API**: [https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev](https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev)
+
+
 ## 🎯 Assignment Requirements
 
-This project fulfills all requirements of the DodoPayments React Intern Assignment:
-
+This project fulfills all requirements of the assignmentt:
 ✅ **Figma Design Replication** - Pixel-perfect implementation with exact spacing, colors, and typography
+
 ✅ **Responsive Design** - Desktop, tablet, and mobile support with hamburger menu
 ✅ **Backend API Server** - Hono server with 2-second delay simulation
 ✅ **Rate Limiting** - 10 requests/minute limit returning 429 on excess
@@ -22,6 +30,7 @@ This project fulfills all requirements of the DodoPayments React Intern Assignme
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Bun v1.1.38+
 - Node.js v18+ (optional)
 
@@ -43,13 +52,15 @@ bun run dev
 ```
 
 **Access Points:**
+
 - Dashboard: http://localhost:3001
 - API Queue Demo: http://localhost:3001/api-queue-demo
-- Backend API: http://localhost:4000
+- Backend API: http://localhost:3000
 
 ## 📋 Features
 
 ### UI Implementation
+
 - **Figma-accurate design** with precise spacing and typography
 - **Fully responsive** across all device sizes
 - **Theme support** with light/dark mode toggle
@@ -58,18 +69,20 @@ bun run dev
 - **Mobile-first approach** with hamburger menu and slide-in sidebar
 
 ### API Queue System
+
 The core feature preventing rate limit errors:
 
 ```typescript
-import { apiQueue } from '@/lib/api-queue'
+import { apiQueue } from "@/lib/api-queue";
 
 // Automatically queues and manages request timing
 await apiQueue.enqueue(async () => {
-  return fetch('/api/endpoint')
-})
+  return fetch("/api/endpoint");
+});
 ```
 
 **Features:**
+
 - Configurable rate limiting (default: 10 req/min)
 - Real-time status tracking (pending → processing → completed)
 - Observer pattern for reactive UI updates
@@ -79,6 +92,7 @@ await apiQueue.enqueue(async () => {
 ### Technical Stack
 
 **Frontend:**
+
 - Next.js 16 (App Router, RSC)
 - React 19
 - TailwindCSS v4
@@ -88,6 +102,7 @@ await apiQueue.enqueue(async () => {
 - TypeScript
 
 **Backend:**
+
 - Hono web framework
 - Custom rate limiter (in-memory)
 - tRPC integration
@@ -119,24 +134,22 @@ packages/
 ## 🎨 Design System
 
 ### Colors
+
 ```css
 /* Brand Colors */
---blue-500: #335cff
---green-500: #1fc16b
---red-500: #fb3748
-
-/* Theme-aware (light/dark) */
---bg-page: #fafbfc / #0e121b
---text-strong: #0e121b / #f5f7fa
---text-sub: #525866 / #b4b8c0
+--blue-500: #335cff --green-500: #1fc16b --red-500: #fb3748
+  /* Theme-aware (light/dark) */ --bg-page: #fafbfc / #0e121b
+  --text-strong: #0e121b / #f5f7fa --text-sub: #525866 / #b4b8c0;
 ```
 
 ### Typography
+
 - **Font**: Inter
 - **Sizes**: 12px (small), 14px (body), 28px (heading)
 - **Weights**: 400-600
 
 ### Spacing
+
 - Base: 4px grid
 - Common: 12px, 16px, 20px
 - Widget padding: 16px
@@ -147,26 +160,33 @@ packages/
 ### Environment Variables
 
 **apps/web/.env.local:**
+
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:4000
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
 ```
 
 **apps/server/.env:**
+
 ```env
-PORT=4000
-RATE_LIMIT_REQUESTS=10
-RATE_LIMIT_WINDOW_MS=60000
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+CORS_ORIGIN=http://localhost:3001
+DATABASE_URL=
+REDIS_URL=
+REDIS_TOKEN=
 ```
 
 ## 🧪 Testing the Queue System
 
 ### Method 1: Demo Page
+
 1. Visit http://localhost:3001/api-queue-demo
 2. Click "Add Request" to queue requests manually
 3. Enable "Auto Mode" for continuous testing
 4. Monitor queue status in real-time
 
 ### Method 2: Manual Testing
+
 1. Add 15+ requests rapidly
 2. Observe queue building (pending → processing)
 3. Verify requests process at 10/min rate
@@ -174,11 +194,12 @@ RATE_LIMIT_WINDOW_MS=60000
 
 ## 📊 API Documentation
 
-### POST /api/echo
+### POST /tpc/message
 
 **Purpose:** Simulates processing with 2-second delay
 
 **Request:**
+
 ```json
 {
   "message": "Hello, World!"
@@ -186,6 +207,7 @@ RATE_LIMIT_WINDOW_MS=60000
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "status": "ok",
@@ -194,25 +216,29 @@ RATE_LIMIT_WINDOW_MS=60000
 ```
 
 **Rate Limited Response (429):**
+
 ```json
 {
-  "error": "Rate limit exceeded",
-  "retryAfter": 60
+   "message":"Too many request"
 }
 ```
 
-**Rate Limit:** 10 requests/minute per IP
+**Rate Limit:** 100 requests/minute per IP
 
 ## 🏗️ Architecture Decisions
 
 ### 1. Monorepo Structure
+
 Separate apps and shared packages enable:
+
 - Type-safe code sharing
 - Independent deployment
 - Clear separation of concerns
 
 ### 2. In-Memory Queue
+
 Chosen for demonstration purposes:
+
 - No external dependencies
 - Simple to understand
 - Sufficient for single-user demo
@@ -220,13 +246,17 @@ Chosen for demonstration purposes:
 **Production Alternative:** Redis-based queue with persistence
 
 ### 3. TailwindCSS v4
+
 Custom CSS variables for:
+
 - Consistent theming
 - Easy dark mode implementation
 - Design token management
 
 ### 4. Component Architecture
+
 Atomic design principles:
+
 - **Atoms:** shadcn/ui components
 - **Molecules:** WidgetHeader, TransactionItem
 - **Organisms:** Complete widgets
@@ -235,13 +265,15 @@ Atomic design principles:
 ## 🚀 Deployment
 
 ### Frontend (Vercel Recommended)
+
 ```bash
 cd apps/web
 bun run build
 # Deploy .next folder
 ```
 
-### Backend (Railway/Render)
+### Backend (Cloudflare Worker)
+
 ```bash
 cd apps/server
 bun run build
@@ -268,6 +300,7 @@ Set environment variables in hosting platform.
 ## 🎓 Key Learnings
 
 This project demonstrates:
+
 1. **Queue pattern** for rate-limit management
 2. **Observer pattern** for reactive updates
 3. **Responsive design** with mobile-first approach

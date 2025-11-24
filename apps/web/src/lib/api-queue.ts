@@ -24,6 +24,16 @@ class ApiQueueManager {
 	private requestInterval: number
 	private subscribers: Set<() => void> = new Set()
 
+	private notifySubscribers() {
+		this.subscribers.forEach((callback) => {
+			try {
+				callback()
+			} catch (error) {
+				console.error('ApiQueue subscriber error', error)
+			}
+		})
+	}
+
 	constructor(maxRequestsPerMinute = 10) {
 		this.maxRequestsPerMinute = maxRequestsPerMinute
 		this.requestInterval = Math.ceil(60000 / maxRequestsPerMinute)
@@ -41,6 +51,7 @@ class ApiQueueManager {
 			}
 
 			this.queue.push(request)
+			this.notifySubscribers()
 
 			if (!this.processing) {
 				this.processQueue()
@@ -58,16 +69,19 @@ class ApiQueueManager {
 			if (!request) break
 
 			request.status = 'processing'
+			this.notifySubscribers()
 
 			try {
 				const result = await request.execute()
 				request.result = result
 				request.status = 'completed'
 				request.resolve(result)
+				this.notifySubscribers()
 			} catch (error) {
 				request.error = error
 				request.status = 'failed'
 				request.reject(error)
+				this.notifySubscribers()
 			}
 
 			if (this.queue.some((r) => r.status === 'pending')) {
@@ -76,6 +90,7 @@ class ApiQueueManager {
 		}
 
 		this.processing = false
+		this.notifySubscribers()
 	}
 
 	getStats(): QueueStats {
@@ -108,7 +123,7 @@ class ApiQueueManager {
 	}
 
 	getQueue(): readonly QueuedRequest[] {
-		return this.queue
+		return this.queue.map((request) => ({ ...request }))
 	}
 
 	clearCompleted() {
@@ -116,6 +131,7 @@ class ApiQueueManager {
 			(r) => r.status === 'completed' || r.status === 'failed',
 		).length
 		this.queue = this.queue.filter((r) => r.status === 'pending' || r.status === 'processing')
+		this.notifySubscribers()
 		return completedCount
 	}
 
@@ -127,6 +143,7 @@ class ApiQueueManager {
 	setRateLimit(requestsPerMinute: number) {
 		this.maxRequestsPerMinute = requestsPerMinute
 		this.requestInterval = Math.ceil(60000 / requestsPerMinute)
+		this.notifySubscribers()
 	}
 }
 
