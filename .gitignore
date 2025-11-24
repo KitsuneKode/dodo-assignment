@@ -4,6 +4,7 @@ wrangler.toml
 node_modules
 .pnp
 .pnp.js
+.gemini
 
 # Build outputs
 dist
