@@ -26,7 +26,8 @@
 		"db:push": "turbo -F @dodo-assignment/db db:push",
 		"db:studio": "turbo -F @dodo-assignment/db db:studio",
 		"db:generate": "turbo -F @dodo-assignment/db db:generate",
-		"db:migrate": "turbo -F @dodo-assignment/db db:migrate"
+		"db:migrate": "turbo -F @dodo-assignment/db db:migrate",
+		"post:install": "bun db:generate"
 	},
 	"dependencies": {
 		"dotenv": "^17.2.2",
