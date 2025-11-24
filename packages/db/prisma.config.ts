@@ -1,11 +1,13 @@
 import path from 'node:path'
 import dotenv from 'dotenv'
-import { defineConfig, env } from 'prisma/config'
+import { defineConfig } from 'prisma/config'
 
 if (!process.env.VERCEL) {
 	dotenv.config({
 		path: '../../apps/server/.env',
 	})
+} else {
+	dotenv.config()
 }
 
 export default defineConfig({
@@ -14,6 +16,6 @@ export default defineConfig({
 		path: path.join('prisma', 'migrations'),
 	},
 	datasource: {
-		url: env('DATABASE_URL'),
+		url: process.env.DATABASE_URL!,
 	},
 })

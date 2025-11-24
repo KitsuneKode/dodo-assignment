@@ -11,21 +11,21 @@ A production-ready finance dashboard built with Next.js 16, TailwindCSS v4, and 
 
 [![Dashboard Screenshot](apps/web/public/image.png)](http://localhost:3001)
 
-- **Frontend Dashboard**: [http://localhost:3001](http://localhost:3001)
+- **Frontend Dashboard**: [https://dodo-assignment-web.vercel.app](https://dodo-assignment-web.vercel.app)
 - **Backend API**: [https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev](https://dodo-assignment-server-production.bhuyanmanash2002.workers.dev)
 
 
 ## 🎯 Assignment Requirements
 
-This project fulfills all requirements of the assignmentt:
-✅ **Figma Design Replication** - Pixel-perfect implementation with exact spacing, colors, and typography
+This project fulfills all requirements of the assignment:
 
-✅ **Responsive Design** - Desktop, tablet, and mobile support with hamburger menu
-✅ **Backend API Server** - Hono server with 2-second delay simulation
-✅ **Rate Limiting** - 10 requests/minute limit returning 429 on excess
-✅ **Frontend Queue System** - Prevents 429 errors with visual status tracking
-✅ **React Query + tRPC** - Type-safe API integration
-✅ **Demo Implementation** - Interactive page at `/api-queue-demo`
+- ✅ **Figma Design Replication** - Pixel-perfect implementation with exact spacing, colors, and typography  
+- ✅ **Responsive Design** - Desktop, tablet, and mobile support with hamburger menu  
+- ✅ **Backend API Server** - Hono server with 2-second delay simulation  
+- ✅ **Rate Limiting** - 10 requests/minute limit returning 429 on excess  
+- ✅ **Frontend Queue System** - Prevents 429 errors with visual status tracking  
+- ✅ **React Query + tRPC** - Type-safe API integration  
+- ✅ **Demo Implementation** - Interactive page at `/api-queue-demo`  
 
 ## 🚀 Quick Start
 
